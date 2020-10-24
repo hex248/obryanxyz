@@ -36,35 +36,6 @@ class Scrollable(tk.Frame):
         # assign this obj (the inner frame) to the windows item of the canvas
         self.windows_item = self.canvas.create_window(0,0, window=self, anchor=tk.NW)
 
-        # Title Label
-        # self.titleLabel = tk.Label(frame, font = ("Arial", 15), text = "Title:").grid(row = 0, padx = 2, pady = 2)
-        # # self.titleLabel.place(relx = 0.02, y = 6, anchor = "nw")
-
-        # # Title Entry
-        # self.titleEntry = tk.Entry(frame, font = ("Arial", 15)).grid(row = 1, padx = 2, pady = 2)
-        # # self.titleEntry.place(relx = 0.02, y = 39, relwidth = 0.7, anchor = "nw")
-
-        # # Section list
-        # self.sections = []
-        # # Heading 1 Label
-        # self.headingLabel = tk.Label(frame, font = ("Arial", 15), text = "Heading:").grid(row = 2, padx = 2, pady = 2)
-        # # self.headingLabel.place(relx = 0.02, y = 90, anchor = "nw")
-
-        # # Heading 1 Entry
-        # self.headingEntry = tk.Entry(frame, font = ("Arial", 15)).grid(row = 3, padx = 2, pady = 2)
-        # # self.headingEntry.place(relx = 0.02, y = 123, relwidth = 0.7, anchor = "nw")
-
-        # # Body 1 Label
-        # self.bodyLabel = tk.Label(frame, font = ("Arial", 15), text = "Body:").grid(row = 4, padx = 2, pady = 2)
-        # # self.bodyLabel.place(relx = 0.02, y = 174, anchor = "nw")
-
-        # # Body 1 Entry
-        # self.bodyEntry = tk.Text(frame, font = ("Arial", 15)).grid(row = 5, padx = 2, pady = 2)
-        # # self.bodyEntry.place(relx = 0.02, y = 207, relwidth = 0.7, relheight = 0.6, anchor = "nw")
-
-        # # First section
-        # self.sections.append([self.headingEntry, self.bodyEntry, 207])
-
 
     def __fill_canvas(self, event):
 
@@ -81,39 +52,45 @@ body = ttk.Frame(root)
 body.pack()
 scrollable_body = Scrollable(body, width = 500)
 
+fileLabel = tk.Label(scrollable_body, font = ("Arial", 15), text = "File Name:")
+fileLabel.grid(row=0, padx = 2, pady = 2, sticky = "w")
+
+fileEntry = tk.Entry(scrollable_body, font=("Arial", 30), width = 56)
+fileEntry.grid(row=1, padx=2, pady=2, sticky = "w")
+
 titleLabel = tk.Label(scrollable_body, font = ("Arial", 15), text = "Title:")
-titleLabel.grid(row = 0, padx = 2, pady = 2, sticky = "w")
+titleLabel.grid(row=2, padx = 2, pady = 2, sticky = "w")
 # self.titleLabel.place(relx = 0.02, y = 6, anchor = "nw")
 
 # Title Entry
 titleEntry = tk.Entry(scrollable_body, font=("Arial", 30), width = 56)
-titleEntry.grid(row=1, padx=2, pady=2, sticky = "w")
+titleEntry.grid(row=3, padx=2, pady=2, sticky = "w")
 # self.titleEntry.place(relx = 0.02, y = 39, relwidth = 0.7, anchor = "nw")
 
 # Section list
 sections = []
 # Heading 1 Label
 headingLabel = tk.Label(scrollable_body, font=("Arial", 15), text="Heading:")
-headingLabel.grid(row=2, padx=2, pady=2, sticky = "w")
+headingLabel.grid(row=4, padx=2, pady=2, sticky = "w")
 # self.headingLabel.place(relx = 0.02, y = 90, anchor = "nw")
 
 # Heading 1 Entry
 headingEntry = tk.Entry(scrollable_body, font=("Arial", 15), width = 112)
-headingEntry.grid(row=3, padx=2, pady=2, sticky = "w")
+headingEntry.grid(row=5, padx=2, pady=2, sticky = "w")
 # self.headingEntry.place(relx = 0.02, y = 123, relwidth = 0.7, anchor = "nw")
 
 # Body 1 Label
 bodyLabel = tk.Label(scrollable_body, font=("Arial", 15), text="Body:")
-bodyLabel.grid(row=4, padx=2, pady=2, sticky = "w")
+bodyLabel.grid(row=6, padx=2, pady=2, sticky = "w")
 # self.bodyLabel.place(relx = 0.02, y = 174, anchor = "nw")
 
 # Body 1 Entry
 bodyEntry = tk.Text(scrollable_body, font=("Arial", 15), width = 112)
-bodyEntry.grid(row=5, padx=2, pady=2, sticky = "w")
+bodyEntry.grid(row=7, padx=2, pady=2, sticky = "w")
 # self.bodyEntry.place(relx = 0.02, y = 207, relwidth = 0.7, relheight = 0.6, anchor = "nw")
 
 # First section
-sections.append([headingEntry, bodyEntry, 5])
+sections.append([headingEntry, bodyEntry, 7])
 
 scrollable_body.update()
 
@@ -153,6 +130,9 @@ def submit():
         </section>
     </section>
 </body>"""
+
+    fileName = fileEntry.get().strip()
+    fileNameSanitised = fileName.replace(" ", "_")
 
     title = titleEntry.get().strip()
     # print("Title:", title, "\n\n")
@@ -194,18 +174,20 @@ def submit():
     print(f"Normal Title: {title}")
     print(f"Sanitised Title: {titleSanitised}")
     
-    f = open(f"blog/{titleSanitised}.html", "w")
+    f = open(f"blog/{fileNameSanitised}.html", "w")
     f.write(blog)
-    print(f"Created a file at blog/{titleSanitised}.html")
+    print(f"Created a file at blog/{fileNameSanitised}.html")
 
     f = open("blog.html", "r")
     fHTML = f.read()
 
     fHTML = fHTML.split("                    </h2>")
-    print(fHTML)
 
     blogLinkHTML = f"""
-                        <a id="blog-link" href="blog/{titleSanitised}.html">{title}</a>"""
+                        <a id="blog-link" href="blog/{fileNameSanitised}.html">{title}</a>
+                        <br>
+                        <br>
+                        <br>"""
     fHTML = fHTML[0] + blogLinkHTML + "\n                    </h2>" + fHTML[1] # Sandwiches the new link inbetween the other halves of the html document
 
     f = open("blog.html", "w")
