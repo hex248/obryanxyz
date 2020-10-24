@@ -173,6 +173,16 @@ img
     margin-right: 20px;
 }
 
+#hyperlink
+{
+    font-family: "Montserrat";
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
 .blog
 {
     display:flex;
