@@ -1,4 +1,4 @@
-# obryanxyz
+# obryan.xyz
 My personal blog website
 
 ## Images 
